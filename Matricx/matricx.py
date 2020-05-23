@@ -1,23 +1,132 @@
 class Matricx:
     def __init__(self, mat):
         """Matricx constructor
-
-        # Arguments
+        :argument
             self: reference to self
             mat: input matrix
 
-        # Returns
+        :returns
             None
 
-        # Raises
+        :raises
             TypeError: In case input is not a 2-D list"""
         try:
             self._n_row = len(mat)
             self._n_col = len(mat[0])
             self._mat = mat
-            if self.n_row == self.n_col:
+            if self._n_row == self._n_col:
                 self._square_mat = True
             else:
                 self._square_mat = False
         except TypeError:
             raise TypeError('Expected 2-D list')
+
+    def __repr__(self):
+        """Returns matrix
+        :argument
+            self: reference to self
+
+        :returns
+            self._mat: matrix"""
+        return self._mat
+
+    def __add__(self, other):
+        """Dunder to add two matrices
+        :argument
+            self: reference to self
+            other: reference to other
+
+        :returns
+            mat: matrix holding summation of two matrices
+
+        :raises
+            ValueError: if shape of self not equals shape of other"""
+        if [self._n_row, self._n_col] == other.get_shape():
+            mat = []
+            for i in range(self._n_row):
+                temp1 = []
+                for j in range(self._n_col):
+                    temp1.append(self._mat[i][j] + other.get_element(i, j))
+                mat.append(temp1)
+            return mat
+        else:
+            raise ValueError('Matrix shape mismatch')
+
+    def __sub__(self, other):
+        """Dunder to subtract two matrices
+        :argument
+            self: reference to self
+            other: reference to other
+
+        :returns
+            mat: matrix holding summation of two matrices
+
+        :raises
+            ValueError: if shape of self not equals shape of other"""
+        if [self._n_row, self._n_col] == other.get_shape():
+            mat = []
+            for i in range(self._n_row):
+                temp1 = []
+                for j in range(self._n_col):
+                    temp1.append(self._mat[i][j] - other.get_element(i, j))
+                mat.append(temp1)
+            return mat
+        else:
+            raise ValueError('Matrix shape mismatch')
+
+    def get_shape(self):
+        """Returns shape of matrix
+        :argument
+            self: reference to self
+
+        :returns
+            [self._n_row, self._n_col]: list with first argument number of rows, second argument number of columns"""
+        return [self._n_row, self._n_col]
+
+    def get_element(self, row, column):
+        """Returns element at specific position of matrix
+        :argument
+            self: reference to self
+            row: row
+            column: column
+
+        :returns
+            self._mat[row][column]: element at position (row, column) of matrix
+
+        :raises
+            IndexError: if position not in matrix"""
+        if row < self._n_row and column < self._n_col:
+            return self._mat[row][column]
+        else:
+            raise IndexError('Desired position unavailable in matrix')
+
+    def scalar_mul(self, n):
+        """Performs scalar multiplication
+        :argument
+            self: reference to self
+            n: scalar
+
+        :returns
+            mat: Resultant matrix"""
+        mat = []
+        for i in range(self._n_row):
+            temp = []
+            for j in range(self._n_col):
+                temp.append(n*self._mat[i][j])
+            mat.append(temp)
+        return mat
+
+    def transpose(self):
+        """Transposes matrix
+        :argument
+            self: reference to self
+
+        :returns
+            mat: Transpose matrix"""
+        mat = []
+        for j in range(self._n_col):
+            temp = []
+            for i in range(self._n_row):
+                temp.append(self._mat[i][j])
+            mat.append(temp)
+        return mat
