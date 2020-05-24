@@ -59,7 +59,7 @@ class Matricx:
             other: reference to other
 
         :returns
-            mat: matrix holding summation of two matrices
+            mat: matrix holding resultant of subtraction of two matrices
 
         :raises
             ValueError: if shape of self not equals shape of other"""
@@ -73,6 +73,19 @@ class Matricx:
             return mat
         else:
             raise ValueError('Matrix shape mismatch')
+
+    def __mul__(self, other):
+        """Dunder to perform multiplication
+        :argument
+            self: reference to self
+            other: reference to other
+
+        :returns
+            mat: Resultant of scalar or matrix multiplication, depending on other is scalar or matrix"""
+        if type(other) == list:
+            self.mul(other)
+        else:
+            self.scalar_mul(other)
 
     def get_shape(self):
         """Returns shape of matrix
@@ -112,9 +125,28 @@ class Matricx:
         for i in range(self._n_row):
             temp = []
             for j in range(self._n_col):
-                temp.append(n*self._mat[i][j])
+                temp.append(n * self._mat[i][j])
             mat.append(temp)
         return mat
+
+    def mul(self, other):
+        """Performs matrix multiplication
+        :argument
+            self: reference to self
+            other: reference to other
+
+        :returns
+            Resultant matrix
+
+        :raises
+            ValueError: if self._n_col not equal other._n_row"""
+        other_shape = other.get_shape()
+        if self._n_col == other_shape[0]:
+            return [[sum(a * b for a, b in zip(A_row, B_col))
+                     for B_col in zip(*other)]
+                    for A_row in self._mat]
+        else:
+            raise ValueError('Matrix shape mismatch')
 
     def transpose(self):
         """Transposes matrix
@@ -130,3 +162,21 @@ class Matricx:
                 temp.append(self._mat[i][j])
             mat.append(temp)
         return mat
+
+    def trace(self):
+        """Returns trace of square matrix
+        :argument
+            self: reference to self
+
+        :returns
+            s: trace of matrix
+
+        :raises
+            """
+        if self._square_mat:
+            s = 0
+            for i in range(self._n_row):
+                s = s + self._mat[i][i]
+            return s
+        else:
+            raise ValueError('Square matrix expected')
