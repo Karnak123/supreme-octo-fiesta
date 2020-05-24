@@ -1,1 +1,1 @@
-from Matricx import matricx
+from .matricx import Matricx

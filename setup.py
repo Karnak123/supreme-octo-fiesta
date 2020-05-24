@@ -5,4 +5,5 @@ setup(name='Matricx',
       author_email='sagnikmazumdar37@gmail.com, sucheta56roy@gmail.com',
       description='Python package to implement basic matrix operations',
       license='MIT',
-      packages=['Matricx'])
+      packages=['Matricx'],
+      zip_safe=False)
